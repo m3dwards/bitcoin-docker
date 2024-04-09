@@ -5,7 +5,7 @@ ARG GID=101
 
 RUN groupadd --gid ${GID} bitcoin \
   && useradd --create-home --no-log-init -u ${UID} -g ${GID} bitcoin \
-  && apt-get update -y \
+  && deb https://snapshot.debian.org/archive/debian/20240409T084143Z/ bullseye main \
   && apt-get install -y curl gnupg gosu \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
