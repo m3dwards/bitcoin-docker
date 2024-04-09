@@ -11,5 +11,5 @@ buildctl build \
   --local dockerfile=. \
   --local context=. \
   --metadata-file metadata.json \
-  --output type=image,name=example.com/foo:$SOURCE_DATE_EPOCH,buildinfo=false,push=$PUSH \
+  --output type=oci,dest=dest.tar,rewrite-timestamp=true,push=$PUSH \
   --opt build-arg:SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH \
