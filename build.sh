@@ -13,4 +13,3 @@ buildctl build \
   --metadata-file metadata.json \
   --output type=image,name=example.com/foo:$SOURCE_DATE_EPOCH,buildinfo=false,push=$PUSH \
   --opt build-arg:SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH \
-  --opt platform=linux/amd64,linux/arm64 
