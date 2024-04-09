@@ -13,3 +13,4 @@ buildctl build \
   --metadata-file metadata.json \
   --output type=oci,dest=dest.tar,rewrite-timestamp=true,push=$PUSH \
   --opt build-arg:SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH \
+  --opt platform=linux/amd64,linux/arm64
