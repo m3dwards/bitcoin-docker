@@ -3,24 +3,13 @@ FROM debian:bullseye-slim
 ARG UID=101
 ARG GID=101
 
-ARG TARGETPLATFORM
-ENV BITCOIN_VERSION=24.0.1
-ENV BITCOIN_DATA=/home/bitcoin/.bitcoin
-ENV PATH=/opt/bitcoin-${BITCOIN_VERSION}/bin:$PATH
-
-RUN set -ex \
-  && if [ "${TARGETPLATFORM}" = "linux/amd64" ]; then export TARGETPLATFORM=x86_64-linux-gnu; fi \
-  && if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then export TARGETPLATFORM=aarch64-linux-gnu; fi \
-  && if [ "${TARGETPLATFORM}" = "linux/arm/v7" ]; then export TARGETPLATFORM=arm-linux-gnueabihf; fi \
-  && curl -SLO https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/bitcoin-${BITCOIN_VERSION}-${TARGETPLATFORM}.tar.gz \
-  && curl -SLO https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/SHA256SUMS \
-  && curl -SLO https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/SHA256SUMS.asc \
-  && grep " bitcoin-${BITCOIN_VERSION}-${TARGETPLATFORM}.tar.gz" SHA256SUMS | sha256sum -c - \
-  && tar -xzf *.tar.gz -C /opt \
-  && rm *.tar.gz *.asc \
-  && rm -rf /opt/bitcoin-${BITCOIN_VERSION}/bin/bitcoin-qt
-
-COPY docker-entrypoint.sh /entrypoint.sh
+RUN groupadd --gid ${GID} bitcoin \
+  && useradd --create-home --no-log-init -u ${UID} -g ${GID} bitcoin \
+  && echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20240409T084143Z/ bullseye main" > /etc/apt/sources.list \
+  && apt-get update \
+  && apt-get install -y curl \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 VOLUME ["/home/bitcoin/.bitcoin"]
 
