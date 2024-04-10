@@ -5,11 +5,7 @@ ARG GID=101
 
 RUN groupadd --gid ${GID} bitcoin \
   && useradd --create-home --no-log-init -u ${UID} -g ${GID} bitcoin \
-  && echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20240409T084143Z/ bullseye main" > /etc/apt/sources.list \
-  && apt-get update \
-  && apt-get install -y curl \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  && echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20240409T084143Z/ bullseye main" > /etc/apt/sources.list
 
 VOLUME ["/home/bitcoin/.bitcoin"]
 
