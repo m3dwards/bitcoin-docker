@@ -3,9 +3,17 @@ FROM debian:bullseye-slim
 ARG UID=101
 ARG GID=101
 
-RUN groupadd --gid ${GID} bitcoin \
-  && useradd --create-home --no-log-init -u ${UID} -g ${GID} bitcoin \
-  && echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20240409T084143Z/ bullseye main" > /etc/apt/sources.list
+ARG SNAPSHOT=20240409T084143Z
+
+RUN groupadd --gid ${GID} bitcoin
+RUN useradd --create-home --no-log-init -u ${UID} -g ${GID} bitcoin
+RUN rm -f /etc/apt/sources.list.d/debian.sources
+RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/${SNAPSHOT}/ bullseye main" > /etc/apt/sources.list
+RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/${SNAPSHOT}/ bullseye-updates main" >> /etc/apt/sources.list
+RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/${SNAPSHOT}/ bullseye-security main" >> /etc/apt/sources.list
+
+RUN apt-get update
+RUN apt-get install -y curl
 
 VOLUME ["/home/bitcoin/.bitcoin"]
 
