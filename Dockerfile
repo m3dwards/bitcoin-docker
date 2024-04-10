@@ -13,7 +13,7 @@ RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/$
 RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/${SNAPSHOT}/ bullseye-security main" >> /etc/apt/sources.list
 
 RUN apt-get update
-RUN apt-get install -y curl
+# RUN apt-get install -y curl
 
 VOLUME ["/home/bitcoin/.bitcoin"]
 
