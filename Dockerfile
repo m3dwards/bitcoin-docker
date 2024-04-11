@@ -6,7 +6,7 @@ ARG GID=101
 
 COPY downloader.sh /usr/local/bin/downloader.sh
 RUN chmod +x /usr/local/bin/downloader.sh
-# RUN downloader.sh https://bitcoincore.org/bin/bitcoin-core-26.0/bitcoin-26.0-x86_64-linux-gnu.tar.gz /tmp/bitcoin.tar.gz 
+RUN downloader.sh https://bitcoincore.org/bin/bitcoin-core-26.0/bitcoin-26.0-x86_64-linux-gnu.tar.gz /tmp/bitcoin.tar.gz 
 
 VOLUME ["/home/bitcoin/.bitcoin"]
 
