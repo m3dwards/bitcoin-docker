@@ -1,19 +1,12 @@
 FROM debian:bullseye-slim
+ENV DEBIAN_FRONTEND=noninteractive
 
 ARG UID=101
 ARG GID=101
 
-ARG SNAPSHOT=20240409T084143Z
-
-RUN groupadd --gid ${GID} bitcoin
-RUN useradd --create-home --no-log-init -u ${UID} -g ${GID} bitcoin
-RUN rm -f /etc/apt/sources.list.d/debian.sources
-RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/${SNAPSHOT}/ bullseye main" > /etc/apt/sources.list
-RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/${SNAPSHOT}/ bullseye-updates main" >> /etc/apt/sources.list
-RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/${SNAPSHOT}/ bullseye-security main" >> /etc/apt/sources.list
-
-RUN apt-get update
-RUN apt-get install -y gcc
+COPY downloader.sh /usr/local/bin/downloader.sh
+RUN chmod +x /usr/local/bin/downloader.sh
+# RUN downloader.sh https://bitcoincore.org/bin/bitcoin-core-26.0/bitcoin-26.0-x86_64-linux-gnu.tar.gz /tmp/bitcoin.tar.gz 
 
 VOLUME ["/home/bitcoin/.bitcoin"]
 
